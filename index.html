@@ -17,15 +17,21 @@
     </center>
     <script>
         let numberTOWord=["nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan"]
-        let kelipatanSepuluh=["", "puluh","ratus", "ribu"]
+        let kelipatanSepuluh=["", "puluh","ratus"]
+        let bigger= ["","ribu","juta","milyar","triliun","quadriliun"]
+
+        const removeLeadZero = x=>{
+            while(x.charAt(0)==="0")x=x.substring(1)
+            return x
+        }
         const wordingNumber = x =>{
+            x= removeLeadZero(x)
             let xLength = x.length-1
             let output = ""
             let num = x.split("")
             num.forEach( (e,idx) =>{
                 if(e!=0){
-                    if(xLength ==3 && e==1 ) output+="Seribu"
-                    else if(xLength ==2 && e==1 )output+="Seratus"
+                    if(xLength ==2 && e==1 )output+="Seratus"
                     else if(xLength ==1 && e==1){
                         if(num[idx+1]=="1")output+="Sebelas"
                         else if(num[idx+1]=="0")output+="Sepuluh"
@@ -35,13 +41,53 @@
                     else output+=numberTOWord[e]+ " "+kelipatanSepuluh[xLength]
                     output+= " "
                 }
-                if(xLength==0 && e==0) output+="nol "
+                // if(xLength==0 && e==0) output+="nol "
                 xLength--
                 
             })
             
             return output
         }
+
+    const MainInput = x =>{
+        let temp=0
+        let stage=0
+     
+        let tempWordArr=[]
+
+        let tempWordFinal=[]
+        //console.log(x.length)
+        for(let i=x.length; i>=0 ;i--){
+
+            tempWordArr.unshift(x.charAt(i))
+            if(temp==3 && temp>0){
+                tempWordFinal.unshift(`${wordingNumber(tempWordArr.join(""))} ${bigger[stage]}`)
+                tempWordArr=[]
+                stage++
+                temp=0
+            }
+            else if(temp==2 && !x.charAt(i-1)){
+                tempWordArr.unshift("0")
+                tempWordFinal.unshift(`${wordingNumber(tempWordArr.join(""))} ${bigger[stage]}`)
+                tempWordArr=[]
+                stage++
+                temp=0
+            }
+            else if(temp==1 && !x.charAt(i-1)){
+                tempWordArr.unshift("00")
+                tempWordFinal.unshift(`${wordingNumber(tempWordArr.join(""))} ${bigger[stage]}`)
+                tempWordArr=[]
+                stage++
+                temp=0
+            }
+            
+            temp++
+        }
+
+        return tempWordFinal.join(" ")
+    }
+
+   
 
     const wordingAfterComa =x =>{
         let output = ""
@@ -50,11 +96,13 @@
     }
     </script>
     <script>
+
+    // console.log(MainInput("110000"))    
        function Main(x){
-            if(!x.includes(",")) return `${wordingNumber(x)}`
+            if(!x.includes(",")) return `${MainInput(x)}`
 
             let spliter = x.split(",")
-            return `${wordingNumber(spliter[0])}koma ${wordingAfterComa(spliter[1])}`     
+            return `${MainInput(spliter[0])}koma ${wordingAfterComa(spliter[1])}`     
        }
        
        let input = document.querySelector("#number")
