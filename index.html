@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <center>
+        <div>
+            <h2>Input 0 s.d 9999</h2>
+            <input id="number" type="text">
+            <h5>Terbilang = <span></span></h5>
+        </div>
+    </center>
+    <script>
+        let numberTOWord=["nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan"]
+        let kelipatanSepuluh=["", "puluh","ratus", "ribu"]
+        const wordingNumber = x =>{
+            let xLength = x.length-1
+            let output = ""
+            let num = x.split("")
+            num.forEach( (e,idx) =>{
+                if(e!=0){
+                    if(xLength ==3 && e==1 ) output+="Seribu"
+                    else if(xLength ==2 && e==1 )output+="Seratus"
+                    else if(xLength ==1 && e==1){
+                        if(num[idx+1]=="1")output+="Sebelas"
+                        else if(num[idx+1]=="0")output+="Sepuluh"
+                        else output+=numberTOWord[num[idx+1]]+ " " +"belas"
+                    }
+                    else if(xLength ==0 && num[idx-1]=="1") output+=""
+                    else output+=numberTOWord[e]+ " "+kelipatanSepuluh[xLength]
+                    output+= " "
+                }
+                if(xLength==0 && e==0) output+="nol "
+                xLength--
+                
+            })
+            
+            return output
+        }
+
+    const wordingAfterComa =x =>{
+        let output = ""
+        let num = x.split("").forEach(e=>output+=numberTOWord[e]+" ")
+        return output
+    }
+    </script>
+    <script>
+       function Main(x){
+            if(!x.includes(",")) return `${wordingNumber(x)}`
+
+            let spliter = x.split(",")
+            return `${wordingNumber(spliter[0])}koma ${wordingAfterComa(spliter[1])}`     
+       }
+       
+       let input = document.querySelector("#number")
+       let output = document.querySelector("span")
+       input.addEventListener("input", e=>output.innerHTML = Main(input.value).toUpperCase())
+
+
+
+    </script>
+</body>
+</html>
