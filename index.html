@@ -18,7 +18,7 @@
     <script>
         let numberTOWord=["nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan"]
         let kelipatanSepuluh=["", "puluh","ratus"]
-        let bigger= ["","ribu","juta","milyar","triliun","quadriliun"]
+        let bigger= ["","ribu","juta","milyar","triliun","kuadriliun","kuintiliun","sekstiliun"]
 
         const removeLeadZero = x=>{
             while(x.charAt(0)==="0")x=x.substring(1)
@@ -52,33 +52,29 @@
     const MainInput = x =>{
         let temp=0
         let stage=0
-     
         let tempWordArr=[]
-
         let tempWordFinal=[]
+        let processing = (wording)=> {
+            if(wording!=="")tempWordFinal.unshift(`${wording} ${bigger[stage]} `)
+
+            tempWordArr=[]
+            stage++
+            temp=0
+        }
         //console.log(x.length)
         for(let i=x.length; i>=0 ;i--){
 
             tempWordArr.unshift(x.charAt(i))
-            if(temp==3 && temp>0){
-                tempWordFinal.unshift(`${wordingNumber(tempWordArr.join(""))} ${bigger[stage]}`)
-                tempWordArr=[]
-                stage++
-                temp=0
-            }
+            let wording = wordingNumber(tempWordArr.join(""))
+
+            if(temp==3 && temp>0) processing(wording)
             else if(temp==2 && !x.charAt(i-1)){
                 tempWordArr.unshift("0")
-                tempWordFinal.unshift(`${wordingNumber(tempWordArr.join(""))} ${bigger[stage]}`)
-                tempWordArr=[]
-                stage++
-                temp=0
+                processing(wording)
             }
             else if(temp==1 && !x.charAt(i-1)){
                 tempWordArr.unshift("00")
-                tempWordFinal.unshift(`${wordingNumber(tempWordArr.join(""))} ${bigger[stage]}`)
-                tempWordArr=[]
-                stage++
-                temp=0
+                processing(wording)
             }
             
             temp++
