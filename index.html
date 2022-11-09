@@ -13,6 +13,7 @@
             <!-- <h2>Input 0 s.d 9999 - M. Hafiz Bukhari</h2> -->
             <input id="number" type="text">
             <h5>Terbilang = <span></span></h5>
+            <h5>Angka = RP. <span id="angka"></span></h5>
         </div>
     </center>
     <script>
@@ -105,7 +106,12 @@
        
        let input = document.querySelector("#number")
        let output = document.querySelector("span")
-       input.addEventListener("input", e=>output.innerHTML = Main(input.value).toUpperCase())
+       input.addEventListener("input", e=>{
+        let outputAngka = document.querySelector("#angka")
+
+        output.innerHTML = Main(input.value).toUpperCase()
+        outputAngka.innerHTML = new Intl.NumberFormat().format(input.value)
+       })
 
 
     //    M. Hafiz Bukhari
