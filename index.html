@@ -10,7 +10,7 @@
 
     <center>
         <div>
-            <h2>Input 0 s.d 9999 - M. Hafiz Bukhari</h2>
+            <!-- <h2>Input 0 s.d 9999 - M. Hafiz Bukhari</h2> -->
             <input id="number" type="text">
             <h5>Terbilang = <span></span></h5>
         </div>
@@ -61,6 +61,7 @@
             stage++
             temp=0
         }
+        if(x=="0")tempWordFinal.unshift("nol ")
         //console.log(x.length)
         for(let i=x.length; i>=0 ;i--){
 
@@ -78,6 +79,7 @@
             }
             
             temp++
+            console.log(tempWordFinal)
         }
 
         return tempWordFinal.join(" ")
